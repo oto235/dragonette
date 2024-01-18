@@ -5,6 +5,8 @@ from email.mime.multipart import MIMEMultipart
 import smtplib 
 import os 
 
+# did this work
+
 # smtp = smtplib.SMTP('smtp.gmail.com', 587) 
 # smtp.ehlo() 
 # smtp.starttls()
