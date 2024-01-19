@@ -7,6 +7,7 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart 
 import smtplib 
 import os 
+from app import app_pass
 
 def message(subject="2023 Tax donation receipt Dragonettes",  
             text="", img=None, 
@@ -46,15 +47,16 @@ def message(subject="2023 Tax donation receipt Dragonettes",
 
 # cannot have these / - :
 
-# Variables to set
+#### Variables to set ####
 from_email = 'sponsorship@dragonetteboosterclub.com'
-# app_pass = 'lgth bgnp rctu uicc'  # oto235
-app_pass = 'osas qqob hdun aqcm'  # sponsorship
-# df = pd.read_csv("filename.csv")
+df = pd.read_csv("filename.csv")
+convert_docx_to_pdf = 1
+send_email = 1
 
 # update tax year in email_body_base and p1
 
-email_body_base = """,
+if send_email:
+    email_body_base = """,
 
 We gratefully appreciate your donation to the Round Rock High School Dragonette Booster Club during the 2023-2024 school year.  Your tax receipts are attached.
 
@@ -64,14 +66,13 @@ Jason Schwarz
 Sponsorship Committee Co-chair
 RRHS Dragonette Booster Club"""
 
-smtp = smtplib.SMTP('smtp.gmail.com', 587) 
-smtp.ehlo() 
-smtp.starttls()
-
-smtp.login(from_email, app_pass)
+    smtp = smtplib.SMTP('smtp.gmail.com', 587) 
+    smtp.ehlo() 
+    smtp.starttls()
+    smtp.login(from_email, app_pass)
 
 start = 0
-stop = 1
+stop = len(df)
 
 for _ in range(start, stop):
     # pull info
@@ -140,22 +141,25 @@ for _ in range(start, stop):
     document.save(filename)
 
     # convert to pdf
-    convert(filename)
+    if convert_docx_to_pdf:
+        convert(filename)
 
-    # # setup email specifics
-    # email_body = "Dear " + contact + email_body_base
-    # to_email = [email] 
-    
-    # # generate pdf file path
-    # pdf_filename = filename[:-4] + "pdf"
-    # att_file_path = r"C:\Users\oto23\OneDrive\Documents\School_kids\dragonette_scripts\dragonette\\" + pdf_filename
-    
-    # # create email message 
-    # msg = message(text=email_body, attachment=att_file_path) 
+    if send_email:
+        # setup email specifics
+        email_body = "Dear " + contact + email_body_base
+        to_email = [email] 
+        
+        # generate pdf file path
+        pdf_filename = filename[:-4] + "pdf"
+        att_file_path = r"C:\Users\oto23\OneDrive\Documents\School_kids\dragonette_scripts\dragonette\\" + pdf_filename
+        
+        # create email message 
+        msg = message(text=email_body, attachment=att_file_path) 
 
-    # # send the email
-    # smtp.sendmail(from_addr=from_email,
-    #               to_addrs=to_email, 
-    #               msg=msg.as_string()) 
+        # send the email
+        smtp.sendmail(from_addr=from_email,
+                    to_addrs=to_email, 
+                    msg=msg.as_string()) 
 
-smtp.quit()
+if send_email:
+    smtp.quit()
