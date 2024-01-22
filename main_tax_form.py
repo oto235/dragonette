@@ -91,7 +91,7 @@ if __name__ == "__main__":
         document = docx.Document()
 
         ##### document starts with logo #####
-        document.add_picture('dragonette_logo.png')
+        document.add_picture('dragonette_logo_.png')
 
         # title and heading
         document.add_heading("Dragonette Donation Document", level=0)
