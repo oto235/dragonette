@@ -60,7 +60,7 @@ if __name__ == "__main__":
     if send_email:
         email_body_base = """,
 
-    We gratefully appreciate your donation to the Round Rock High School Dragonette Booster Club during the 2023-2024 school year.  Your tax receipts are attached.
+    We gratefully appreciate your donation to the Round Rock High School Dragonette Booster Club during the 2023-2024 school year.  Your tax receipt is attached.
 
     Your generous donation will be used for competition fees, dance apparel, choreography, props, and other operating expenses not covered by the dance department’s district budget. In addition, donations also help the Booster Club provide scholarships to graduating seniors. Thank you for partnering with us to make this year so special for the dancers and their school community.
 
@@ -76,21 +76,14 @@ if __name__ == "__main__":
     start = 0
     stop = len(df)
 
-    for _ in range(start, stop):
+    for idx in range(start, stop):
         # pull info
-        # sponsor = df['sponsor'][idx]
-        # contact = df['contact'][idx]
-        # date = df['date'][idx]
-        # donation = df['donation'][idx]
-        # donation_type = df['donation_type'][idx]
-        # email = df['email'][idx]
-
-        sponsor = "Leslie Salas"
-        contact = "Leslie Salas"
-        date = "7/9/2023"
-        donation = "$50"
-        donation_type = "Venmo"
-        email = "none"
+        sponsor = df['sponsor'][idx]
+        contact = df['contact'][idx]
+        date = df['date'][idx]
+        donation = df['donation'][idx]
+        donation_type = df['donation_type'][idx]
+        email_address = df['email'][idx]
 
         # create document and add to it
         document = docx.Document()
@@ -149,7 +142,7 @@ if __name__ == "__main__":
         if send_email:
             # setup email specifics
             email_body = "Dear " + contact + email_body_base
-            to_email = [email] 
+            to_email = [email_address] 
             
             # generate pdf file path
             pdf_filename = filename[:-4] + "pdf"
