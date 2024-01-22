@@ -7,7 +7,9 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart 
 import smtplib 
 import os 
-from app import app_pass, filepath
+
+# private variables the public does not need
+from app import app_pass, filepath, from_email
 
 def message(subject="2023 Tax donation receipt Dragonettes",  
             text="", img=None, 
@@ -48,7 +50,6 @@ def message(subject="2023 Tax donation receipt Dragonettes",
 # cannot have these / - : in sponsor name
 
 #### Variables to set ####
-from_email = 'sponsorship@dragonetteboosterclub.com'
 df = pd.read_csv("filename.csv")
 convert_docx_to_pdf = 1
 send_email = 1
