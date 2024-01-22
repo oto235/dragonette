@@ -7,7 +7,7 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart 
 import smtplib 
 import os 
-from app import app_pass
+from app import app_pass, filepath
 
 def message(subject="2023 Tax donation receipt Dragonettes",  
             text="", img=None, 
@@ -45,13 +45,14 @@ def message(subject="2023 Tax donation receipt Dragonettes",
 
     return msg
 
-# cannot have these / - :
+# cannot have these / - : in sponsor name
 
 #### Variables to set ####
 from_email = 'sponsorship@dragonetteboosterclub.com'
 df = pd.read_csv("filename.csv")
 convert_docx_to_pdf = 1
 send_email = 1
+#### ####
 
 
 if __name__ == "__main__":
@@ -77,7 +78,7 @@ if __name__ == "__main__":
     stop = len(df)
 
     for idx in range(start, stop):
-        # pull info
+        # pull info from dataframe
         sponsor = df['sponsor'][idx]
         contact = df['contact'][idx]
         date = df['date'][idx]
@@ -125,7 +126,7 @@ if __name__ == "__main__":
 
         # signature
         document.add_paragraph("Appreciatively,").paragraph_format.space_after = Inches(0)
-        document.add_picture("jason_schwarz_signature.png")
+        document.add_picture("jason_schwarz_signature.png")  # insert your own signature file here
         document.add_paragraph("Jason Schwarz").paragraph_format.space_after = Inches(0)
         document.add_paragraph("Sponsorship Committee Co-chair").paragraph_format.space_after = Inches(0)
         document.add_paragraph("Round Rock High School Dragonette Booster Club")
@@ -146,7 +147,7 @@ if __name__ == "__main__":
             
             # generate pdf file path
             pdf_filename = filename[:-4] + "pdf"
-            att_file_path = r"C:\Users\oto23\OneDrive\Documents\School_kids\dragonette_scripts\dragonette\\" + pdf_filename
+            att_file_path = filepath + pdf_filename
             
             # create email message 
             msg = message(text=email_body, attachment=att_file_path) 
